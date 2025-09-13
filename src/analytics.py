@@ -63,7 +63,7 @@ def weekly_cigarettes_avoided_and_money_saved(
     """
     Analyze how many cigarettes were avoided this week and how much money was saved.
     Assumes a habit named 'Cigarettes Smoked' exists and its plan is a list of target values per day.
-    price_per_pack: price of a pack of cigarettes (default 10.0)
+    price_per_pack: price of a pack of cigarettes (default 10.0 €)
     cigarettes_per_pack: number of cigarettes in a pack (default 20)
     """
     import datetime
