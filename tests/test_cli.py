@@ -1,4 +1,4 @@
-from cli import (
+from src.cli import (
     generate_prior_data,
     setup_initial_consumption,
     show_dashboard,
@@ -9,8 +9,8 @@ from cli import (
     modify_habit,
     show_analytics,
 )
-from tracker import HabitTracker
-from habit import Habit
+from src.tracker import HabitTracker
+from src.habit import Habit
 
 
 def test_generate_prior_data():

@@ -1,5 +1,5 @@
 import datetime
-from habit import Habit
+from src.habit import Habit
 
 
 def test_habit_initialization():

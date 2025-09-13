@@ -1,6 +1,6 @@
-from tracker import HabitTracker
-from habit import Habit
-from analytics import (
+from src.tracker import HabitTracker
+from src.habit import Habit
+from src.analytics import (
     plot_habit_time_series,
     list_habits,
     habits_by_periodicity,

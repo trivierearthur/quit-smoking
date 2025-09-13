@@ -1,5 +1,5 @@
-from tracker import HabitTracker
-from habit import Habit
+from src.tracker import HabitTracker
+from src.habit import Habit
 
 
 def test_add_and_get_habit():

@@ -1,13 +1,13 @@
 import datetime
-from analytics import (
+from src.analytics import (
     list_habits,
     habits_by_periodicity,
     longest_streak,
     longest_streak_all,
     plot_habit_time_series,
 )
-from habit import Habit
-from tracker import HabitTracker
+from src.habit import Habit
+from src.tracker import HabitTracker
 
 
 def test_list_habits():

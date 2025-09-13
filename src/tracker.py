@@ -1,4 +1,4 @@
-from habit import Habit
+from src.habit import Habit
 
 
 class HabitTracker:

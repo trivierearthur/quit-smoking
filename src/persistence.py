@@ -1,6 +1,6 @@
 import sqlite3
-from habit import Habit
-from tracker import HabitTracker
+from src.habit import Habit
+from src.tracker import HabitTracker
 import datetime
 
 DB_FILE = ".db/tracker.db"
