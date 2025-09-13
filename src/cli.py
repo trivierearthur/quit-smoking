@@ -54,11 +54,9 @@ def show_dashboard(tracker: HabitTracker):
 
 def show_reduction_plans(tracker: HabitTracker):
     for habit in tracker.habits:
-        print(f"\nPlan for {habit.name}:")
         if habit.plan:
+            print(f"\nPlan for {habit.name}:")
             print(", ".join(str(x) for x in habit.plan[:7]) + " ...")
-        else:
-            print("No plan set.")
 
 
 def log_habit_values(tracker: HabitTracker):
