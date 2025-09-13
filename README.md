@@ -9,10 +9,21 @@ To set up the project, install the required dependencies using:
 pip install -r requirements.txt
 ```
 
-### Dependencies
+## Dependencies
 
 - **pytest**: For running unit tests
 - **matplotlib**: For analytics and plotting
+
+## VS Code Extensions
+
+The following VS Code extensions are recommended for this project (see `.vscode/extensions.json`):
+
+- **Python** (`ms-python.python`): Core support for Python development in VS Code.
+- **Black Formatter** (`ms-python.black-formatter`): Code formatting using Black.
+- **Flake8** (`ms-python.flake8`): Linting and code quality checks.
+- **SQLite** (`alexcvzz.vscode-sqlite`): View and manage SQLite database files.
+- **Pytest** (`ms-pytest.pytest`): Integration for running and managing pytest unit tests.
+
 
 
 ## Todo
