@@ -9,6 +9,17 @@ To set up the project, install the required dependencies using:
 pip install -r requirements.txt
 ```
 
+
+## Running the App
+
+To start the application, run the following command from the project directory:
+
+```sh
+python main.py
+```
+
+This will launch the console interface for the Quit Smoking App.
+
 ## Dependencies
 
 - **pytest**: For running unit tests
