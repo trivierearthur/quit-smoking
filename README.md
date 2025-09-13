@@ -48,21 +48,36 @@ This starts the console interface for the Quit Smoking App.
 
 ## Running Tests  
 
-You can run unit tests using **pytest** in two ways:  
 
-### 1. Command Line  
+You can run all unit tests using **pytest**. This ensures your code is working as expected.
+
+### 1. Command Line
+
+Open a terminal in your project root and run:
 
 ```powershell
 python -m pytest
 ```
 
-This will discover and run all tests in files named `test_*.py`.  
+This will automatically discover and run all tests in files named `test_*.py` inside the `tests/` folder. You should see output showing which tests passed or failed.
 
-### 2. VS Code Testing Panel  
+If you want to see more detailed output, use:
 
-- Open the **Testing panel** (beaker icon or `Ctrl+Shift+`)  
-- Ensure **pytest** is selected as the test framework (configure if prompted)  
-- Click the play/run icons next to your tests  
+```powershell
+python -m pytest -v
+```
+
+### 2. VS Code Testing Panel
+
+- Open the **Testing** panel (beaker icon in the Activity Bar, or `Ctrl+Shift+\`)
+- Make sure **pytest** is selected as the test framework (configure if prompted)
+- Click the play/run icons next to your tests to run them individually or all at once
+
+If you do not see any tests, ensure your test files are named like `test_*.py` and are in the `tests/` folder.
+
+**Troubleshooting:**
+- If you get import errors, make sure your `src/` and `tests/` folders have an `__init__.py` file (can be empty).
+- If pytest is not found, install it with `pip install pytest`.
 
 ---
 
