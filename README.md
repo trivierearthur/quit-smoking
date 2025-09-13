@@ -66,10 +66,26 @@ This will discover and run all tests in files named `test_*.py`.
 
 ---
 
-## 📊 Dependencies  
 
-- **pytest** → Unit testing  
-- **matplotlib** → Analytics & plotting  
+## 📊 Dependencies
+
+- **pytest** → Unit testing
+- **matplotlib** → Analytics & plotting
+- **black** → Code formatting
+- **flake8** → Linting
+
+---
+
+## 🧹 Linting & Formatting
+
+- **Black**: To auto-format your code, run:
+  ```powershell
+  black .
+  ```
+- **Flake8**: To check code style and lint for errors, run:
+  ```powershell
+  flake8 .
+  ```
 
 ---
 

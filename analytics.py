@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 
-list_habits = lambda tracker: [h.name for h in tracker.habits]
-habits_by_periodicity = lambda tracker, period: [
-    h.name for h in tracker.habits if h.periodicity == period
-]
+
+def list_habits(tracker):
+    return [h.name for h in tracker.habits]
+
+
+def habits_by_periodicity(tracker, period):
+    return [h.name for h in tracker.habits if h.periodicity == period]
 
 
 def longest_streak(habit):
