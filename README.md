@@ -3,11 +3,31 @@
 
 ## Initialize
 
-To set up the project, install the required dependencies using:
 
-```sh
+To set up the project, create a virtual environment and install the required dependencies:
+
+```powershell
+# Create a new virtual environment (if .venv does not exist)
+python -m venv .venv
+
+# Activate the virtual environment (Windows PowerShell)
+.\.venv\Scripts\Activate.ps1
+
+# Install dependencies
 pip install -r requirements.txt
 ```
+
+
+**Troubleshooting (Windows PowerShell):**
+If you see an error about script execution being disabled when activating the virtual environment, run the following command in a PowerShell window (as your user, not as admin):
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+This allows you to run local scripts like `Activate.ps1`.
+
+If you ever delete the `.venv` folder, simply repeat these steps to recreate it and reinstall dependencies.
 
 
 ## Running the App
