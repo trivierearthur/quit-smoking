@@ -3,7 +3,7 @@
     "ms-python.python",
     "ms-python.black-formatter",
     "ms-python.flake8",
-    "alexcvzz.vscode-sqlite",
+    "qwtel.sqlite-viewer",
     "ms-pytest.pytest"
   ]
 }

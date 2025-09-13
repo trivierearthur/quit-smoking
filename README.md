@@ -53,7 +53,7 @@ You can run unit tests using **pytest** in two ways:
 ### 1. Command Line  
 
 ```powershell
-pytest
+python -m pytest
 ```
 
 This will discover and run all tests in files named `test_*.py`.  
@@ -80,7 +80,7 @@ Listed in `.vscode/extensions.json`:
 - **Python** (`ms-python.python`) – Core Python support  
 - **Black Formatter** (`ms-python.black-formatter`) – Auto formatting  
 - **Flake8** (`ms-python.flake8`) – Linting & code quality  
-- **SQLite** (`alexcvzz.vscode-sqlite`) – Manage SQLite database files  
+- **SQLite** (`qwtel.sqlite-viewer`) – Manage SQLite database files  
 - **Pytest** (`ms-pytest.pytest`) – Integrated test runner  
 
 ---
