@@ -1,10 +1,19 @@
 # Quit Smoking App
 
+
 ## Initialize
 
+To set up the project, install the required dependencies using:
+
+```sh
+pip install -r requirements.txt
 ```
-pip install
-```
+
+### Dependencies
+
+- **pytest**: For running unit tests
+- **matplotlib**: For analytics and plotting
+
 
 ## Todo
 - Unit tests
