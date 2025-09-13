@@ -3,7 +3,7 @@ from habit import Habit
 from tracker import HabitTracker
 import datetime
 
-DB_FILE = "tracker.db"
+DB_FILE = ".db/tracker.db"
 
 
 def init_db():
