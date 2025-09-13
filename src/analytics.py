@@ -1,18 +1,21 @@
 import matplotlib.pyplot as plt
+from functools import reduce
 
 
 def list_habits(tracker):
     """
     Return a list of all currently tracked habit names.
     """
-    return [h.name for h in tracker.habits]
+    return list(map(lambda h: h.name, tracker.habits))
 
 
 def habits_by_periodicity(tracker, period):
     """
     Return a list of all habit names with the given periodicity (e.g., 'daily', 'weekly').
     """
-    return [h.name for h in tracker.habits if h.periodicity == period]
+    return list(
+        map(lambda h: h.name, filter(lambda h: h.periodicity == period, tracker.habits))
+    )
 
 
 def longest_run_streak_for_habit(habit):
@@ -22,13 +25,16 @@ def longest_run_streak_for_habit(habit):
     dates = sorted(habit.records.keys())
     if not dates:
         return 0
-    max_streak = streak = 1
-    for i in range(1, len(dates)):
+
+    def streak_reducer(acc, i):
+        streak, max_streak = acc
         if (dates[i] - dates[i - 1]).days == 1:
             streak += 1
         else:
             streak = 1
-        max_streak = max(max_streak, streak)
+        return streak, max(streak, max_streak)
+
+    _, max_streak = reduce(streak_reducer, range(1, len(dates)), (1, 1))
     return max_streak
 
 
@@ -36,7 +42,9 @@ def longest_run_streak_all(tracker):
     """
     Return the longest run streak among all defined habits.
     """
-    return max((longest_run_streak_for_habit(h) for h in tracker.habits), default=0)
+    return reduce(
+        lambda acc, h: max(acc, longest_run_streak_for_habit(h)), tracker.habits, 0
+    )
 
 
 def plot_habit_time_series(habit):
