@@ -4,8 +4,9 @@ from src.analytics import (
     plot_habit_time_series,
     list_habits,
     habits_by_periodicity,
-    longest_streak,
-    longest_streak_all,
+    longest_run_streak_for_habit,
+    longest_run_streak_all,
+    weekly_cigarettes_avoided_and_money_saved,
 )
 import random
 
@@ -102,7 +103,9 @@ def show_analytics(tracker: HabitTracker):
     print("\nTracked habits:", list_habits(tracker))
     for period in ["daily", "weekly", "monthly"]:
         print(f"{period.capitalize()} habits:", habits_by_periodicity(tracker, period))
-    print("Longest streak across all habits:", longest_streak_all(tracker))
+    print("Longest streak across all habits:", longest_run_streak_all(tracker))
     for habit in tracker.habits:
-        print(f"Longest streak for {habit.name}: {longest_streak(habit)}")
+        print(f"Longest streak for {habit.name}: {longest_run_streak_for_habit(habit)}")
         plot_habit_time_series(habit)
+    print("\n--- Weekly Motivation ---")
+    weekly_cigarettes_avoided_and_money_saved(tracker)
