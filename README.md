@@ -1,10 +1,10 @@
-# 🚭 Quit Smoking App  
+# Quit Smoking App  
 
 A console-based habit tracker to help you quit smoking, build healthier routines, and gain insights through analytics.  
 
 ---
 
-## 📦 Project Setup  
+## Project Setup  
 
 ### 1. Create & Activate Virtual Environment  
 
@@ -22,7 +22,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-**⚠️ Troubleshooting (Windows PowerShell):**  
+** Troubleshooting (Windows PowerShell):**  
 If you see an error about script execution being disabled when activating the virtual environment, run:  
 
 ```powershell
@@ -34,7 +34,7 @@ If you ever delete `.venv`, simply repeat the steps above.
 
 ---
 
-## ▶️ Running the App  
+##  Running the App  
 
 Launch the app with:  
 
@@ -46,7 +46,7 @@ This starts the console interface for the Quit Smoking App.
 
 ---
 
-## 🧪 Running Tests  
+## Running Tests  
 
 You can run unit tests using **pytest** in two ways:  
 
@@ -67,7 +67,7 @@ This will discover and run all tests in files named `test_*.py`.
 ---
 
 
-## 📊 Dependencies
+## Dependencies
 
 - **pytest** → Unit testing
 - **matplotlib** → Analytics & plotting
@@ -76,7 +76,7 @@ This will discover and run all tests in files named `test_*.py`.
 
 ---
 
-## 🧹 Linting & Formatting
+## Linting & Formatting
 
 - **Black**: To auto-format your code, run:
   ```powershell
@@ -89,7 +89,7 @@ This will discover and run all tests in files named `test_*.py`.
 
 ---
 
-## 🛠️ Recommended VS Code Extensions  
+## Recommended VS Code Extensions  
 
 Listed in `.vscode/extensions.json`:  
 
@@ -101,11 +101,11 @@ Listed in `.vscode/extensions.json`:
 
 ---
 
-## ✅ Project Requirements & Checklist  
+## Project Requirements & Checklist  
 
 - [ ] Unit tests implemented  
 
-- [ ] Your project is uploaded to GitHub (code not zipped) and polished.
+- [x] Your project is uploaded to GitHub (code not zipped) and polished.
 
 - [x] Your project has a good Readme.
 
