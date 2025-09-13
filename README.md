@@ -1,72 +1,100 @@
-# Quit Smoking App
+# 🚭 Quit Smoking App  
 
+A console-based habit tracker to help you quit smoking, build healthier routines, and gain insights through analytics.  
 
-## Initialize
+---
 
+## 📦 Project Setup  
 
-To set up the project, create a virtual environment and install the required dependencies:
+### 1. Create & Activate Virtual Environment  
 
 ```powershell
-# Create a new virtual environment (if .venv does not exist)
+# Create a new virtual environment (if not already created)
 python -m venv .venv
 
 # Activate the virtual environment (Windows PowerShell)
 .\.venv\Scripts\Activate.ps1
+```
 
-# Install dependencies
+### 2. Install Dependencies  
+
+```powershell
 pip install -r requirements.txt
 ```
 
-
-**Troubleshooting (Windows PowerShell):**
-If you see an error about script execution being disabled when activating the virtual environment, run the following command in a PowerShell window (as your user, not as admin):
+**⚠️ Troubleshooting (Windows PowerShell):**  
+If you see an error about script execution being disabled when activating the virtual environment, run:  
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-This allows you to run local scripts like `Activate.ps1`.
+This allows you to run local scripts like `Activate.ps1`.  
+If you ever delete `.venv`, simply repeat the steps above.  
 
-If you ever delete the `.venv` folder, simply repeat these steps to recreate it and reinstall dependencies.
+---
 
+## ▶️ Running the App  
 
-## Running the App
-
-To start the application, run the following command from the project directory:
+Launch the app with:  
 
 ```sh
 python main.py
 ```
 
-This will launch the console interface for the Quit Smoking App.
+This starts the console interface for the Quit Smoking App.  
 
-## Dependencies
+---
 
-- **pytest**: For running unit tests
-- **matplotlib**: For analytics and plotting
+## 🧪 Running Tests  
 
-## VS Code Extensions
+You can run unit tests using **pytest** in two ways:  
 
-The following VS Code extensions are recommended for this project (see `.vscode/extensions.json`):
+### 1. Command Line  
 
-- **Python** (`ms-python.python`): Core support for Python development in VS Code.
-- **Black Formatter** (`ms-python.black-formatter`): Code formatting using Black.
-- **Flake8** (`ms-python.flake8`): Linting and code quality checks.
-- **SQLite** (`alexcvzz.vscode-sqlite`): View and manage SQLite database files.
-- **Pytest** (`ms-pytest.pytest`): Integration for running and managing pytest unit tests.
+```powershell
+pytest
+```
 
+This will discover and run all tests in files named `test_*.py`.  
 
+### 2. VS Code Testing Panel  
 
-## Todo
-- Unit tests
-- Improve Readme file
-- DB
-- Your project is uploaded to GitHub (code not zipped) and polished.
-- Your project has a good Readme.
-- You follow basic Python naming conventions and don't commit files the users don't need (e.g. pycache, use a .gitignore if needed).
-- Your project is modular and consists of several, logically split files that make it easy for users to understand how your app works.
-- You have some basic code comments.
-- Your analytics module is complete, as defined in the portfolio guidelines.
-- Your streak calculation respects the habit's periodicity.
-- You have 4 weeks worth of predefined habit data (time-series data) that you can use in unit tests to verify your streak calculations.
-- You have a good suite of unit tests covering a) habit creation, editing and deletion and b) tests for each functionality in the analytics module.
+- Open the **Testing panel** (beaker icon or `Ctrl+Shift+`)  
+- Ensure **pytest** is selected as the test framework (configure if prompted)  
+- Click the play/run icons next to your tests  
+
+---
+
+## 📊 Dependencies  
+
+- **pytest** → Unit testing  
+- **matplotlib** → Analytics & plotting  
+
+---
+
+## 🛠️ Recommended VS Code Extensions  
+
+Listed in `.vscode/extensions.json`:  
+
+- **Python** (`ms-python.python`) – Core Python support  
+- **Black Formatter** (`ms-python.black-formatter`) – Auto formatting  
+- **Flake8** (`ms-python.flake8`) – Linting & code quality  
+- **SQLite** (`alexcvzz.vscode-sqlite`) – Manage SQLite database files  
+- **Pytest** (`ms-pytest.pytest`) – Integrated test runner  
+
+---
+
+## ✅ Project Requirements & Checklist  
+
+- [ ] Unit tests implemented  
+- [ ] Improved README (this file!)  
+- [ ] Database integration completed  
+- [ ] Uploaded to GitHub (not zipped, with `.gitignore`)  
+- [ ] Modular code (logical file structure, comments)  
+- [ ] Complete analytics module (per portfolio guidelines)  
+- [ ] Streak calculation respects habit periodicity  
+- [ ] 4 weeks of predefined time-series habit data for testing streaks  
+- [ ] Unit tests cover:  
+  - Habit creation, editing & deletion  
+  - Analytics functionality  
