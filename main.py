@@ -1,7 +1,6 @@
 from tracker import generate_reduction_plan
 from habit import Habit
 from cli import (
-    PREDEFINED_HABITS,
     generate_prior_data,
     setup_initial_consumption,
     show_dashboard,
@@ -13,6 +12,7 @@ from cli import (
     show_analytics,
 )
 from persistence import init_db, save_habit, load_tracker
+from constants import PREDEFINED_HABITS
 
 
 def main():
