@@ -1,4 +1,4 @@
-from tracker import HabitTracker, generate_reduction_plan
+from tracker import HabitTracker
 from habit import Habit
 from analytics import (
     plot_habit_time_series,
@@ -7,7 +7,6 @@ from analytics import (
     longest_streak,
     longest_streak_all,
 )
-import datetime
 import random
 
 PREDEFINED_HABITS = [
