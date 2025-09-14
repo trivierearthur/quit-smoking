@@ -1,12 +1,23 @@
+"""
+persistence.py
+This module handles all database operations for the Quit Smoking app.
+It provides functions to initialize the database, save habits and their records, and load all data into a HabitTracker instance.
+"""
+
 import sqlite3
 from src.habit import Habit
 from src.tracker import HabitTracker
 import datetime
 
+# Path to the SQLite database file
 DB_FILE = ".db/tracker.db"
 
 
 def init_db():
+    """
+    Create the SQLite database and required tables if they do not exist.
+    Should be called once at app startup.
+    """
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute(
@@ -31,6 +42,10 @@ def init_db():
 
 
 def save_habit(habit: Habit):
+    """
+    Save a habit and all its records to the database.
+    If the habit already exists, its records are updated.
+    """
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute(
@@ -57,6 +72,10 @@ def save_habit(habit: Habit):
 
 
 def load_tracker():
+    """
+    Load all habits and their records from the database into a HabitTracker instance.
+    Returns the populated HabitTracker.
+    """
     tracker = HabitTracker()
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
