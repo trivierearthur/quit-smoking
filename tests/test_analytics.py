@@ -2,8 +2,8 @@ import datetime
 from src.analytics import (
     list_habits,
     habits_by_periodicity,
-    longest_streak,
-    longest_streak_all,
+    longest_run_streak_for_habit,
+    longest_run_streak_all,
     plot_habit_time_series,
 )
 from src.habit import Habit
@@ -35,15 +35,15 @@ def test_longest_streak():
     # Test the longest streak calculation for a single habit
     habit = Habit("Test", "desc", "daily", "elimination")
     # No records: streak should be 0
-    assert longest_streak(habit) == 0
+    assert longest_run_streak_for_habit(habit) == 0
     # Add a 3-day streak
     base = datetime.date(2025, 9, 10)
     for i in range(3):
         habit.log(1, date=base + datetime.timedelta(days=i))
-    assert longest_streak(habit) == 3
+    assert longest_run_streak_for_habit(habit) == 3
     # Add a break in the streak, should still return 3
     habit.log(1, date=base + datetime.timedelta(days=5))
-    assert longest_streak(habit) == 3
+    assert longest_run_streak_for_habit(habit) == 3
 
 
 def test_longest_streak_all():
@@ -59,7 +59,7 @@ def test_longest_streak_all():
     tracker.add_habit(h1)
     tracker.add_habit(h2)
     # The longest streak should be 4 (from h2)
-    assert longest_streak_all(tracker) == 4
+    assert longest_run_streak_all(tracker) == 4
 
 
 def test_plot_habit_time_series(monkeypatch):
