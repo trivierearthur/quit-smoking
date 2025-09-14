@@ -3,6 +3,7 @@ from src.habit import Habit
 
 
 def test_add_and_get_habit():
+    # Test that a habit can be added and retrieved by name
     tracker = HabitTracker()
     habit = Habit("No Smoking", "desc", "daily", "elimination")
     tracker.add_habit(habit)
@@ -10,6 +11,7 @@ def test_add_and_get_habit():
 
 
 def test_remove_habit():
+    # Test that a habit can be removed and others remain
     tracker = HabitTracker()
     habit1 = Habit("No Smoking", "desc", "daily", "elimination")
     habit2 = Habit("Exercise", "desc", "daily", "establishment")
@@ -21,6 +23,7 @@ def test_remove_habit():
 
 
 def test_modify_habit():
+    # Test that a habit's attributes can be modified
     tracker = HabitTracker()
     habit = Habit("No Smoking", "desc", "daily", "elimination")
     tracker.add_habit(habit)
@@ -40,6 +43,7 @@ def test_modify_habit():
 
 
 def test_log_habit():
+    # Test that logging a value for a habit calls the habit's log method
     tracker = HabitTracker()
     habit = Habit("No Smoking", "desc", "daily", "elimination")
     tracker.add_habit(habit)
@@ -54,5 +58,6 @@ def test_log_habit():
 
 
 def test_get_habit_returns_none_for_missing():
+    # Test that getting a non-existent habit returns None
     tracker = HabitTracker()
     assert tracker.get_habit("Nonexistent") is None

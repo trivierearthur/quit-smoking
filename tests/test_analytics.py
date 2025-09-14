@@ -11,6 +11,7 @@ from src.tracker import HabitTracker
 
 
 def test_list_habits():
+    # Test that all habit names are listed from the tracker
     tracker = HabitTracker()
     h1 = Habit("No Smoking", "desc", "daily", "elimination")
     h2 = Habit("Exercise", "desc", "weekly", "establishment")
@@ -20,6 +21,7 @@ def test_list_habits():
 
 
 def test_habits_by_periodicity():
+    # Test that habits are filtered by periodicity
     tracker = HabitTracker()
     h1 = Habit("No Smoking", "desc", "daily", "elimination")
     h2 = Habit("Exercise", "desc", "weekly", "establishment")
@@ -30,20 +32,22 @@ def test_habits_by_periodicity():
 
 
 def test_longest_streak():
+    # Test the longest streak calculation for a single habit
     habit = Habit("Test", "desc", "daily", "elimination")
-    # No records
+    # No records: streak should be 0
     assert longest_streak(habit) == 0
-    # 3-day streak
+    # Add a 3-day streak
     base = datetime.date(2025, 9, 10)
     for i in range(3):
         habit.log(1, date=base + datetime.timedelta(days=i))
     assert longest_streak(habit) == 3
-    # Break in streak
+    # Add a break in the streak, should still return 3
     habit.log(1, date=base + datetime.timedelta(days=5))
     assert longest_streak(habit) == 3
 
 
 def test_longest_streak_all():
+    # Test the longest streak calculation across all habits in the tracker
     tracker = HabitTracker()
     h1 = Habit("A", "desc", "daily", "elimination")
     h2 = Habit("B", "desc", "daily", "elimination")
@@ -54,10 +58,12 @@ def test_longest_streak_all():
         h2.log(1, date=base + datetime.timedelta(days=i))
     tracker.add_habit(h1)
     tracker.add_habit(h2)
+    # The longest streak should be 4 (from h2)
     assert longest_streak_all(tracker) == 4
 
 
 def test_plot_habit_time_series(monkeypatch):
+    # Test that the plot function calls plt.show() when data is present
     habit = Habit("Test", "desc", "daily", "elimination")
     base = datetime.date(2025, 9, 10)
     for i in range(3):
@@ -73,6 +79,7 @@ def test_plot_habit_time_series(monkeypatch):
 
 
 def test_plot_habit_time_series_no_data(capsys):
+    # Test that the plot function prints a message when no data is present
     habit = Habit("Test", "desc", "daily", "elimination")
     plot_habit_time_series(habit)
     captured = capsys.readouterr()
