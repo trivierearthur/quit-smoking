@@ -1,6 +1,7 @@
 """
 tracker.py
-This module defines the HabitTracker class, which manages a collection of habits and provides methods to add, remove, modify, and log habits.
+This module defines the HabitTracker class, which manages a collection of habits and provides methods to add, remove, modify,
+and log habits.
 It also provides a function to generate reduction plans for quitting smoking.
 """
 
