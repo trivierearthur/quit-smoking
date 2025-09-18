@@ -87,19 +87,63 @@ def weekly_cigarettes_avoided_and_money_saved(
     if not week_records:
         print("No records for this week.")
         return
-    # Calculate avoided cigarettes: (planned - actual) for each day, sum up
+    # Calculate avoided cigarettes: (initial - actual) for each day, sum up
+    # Assume initial value is the max value in the first 7 days of records (or the first value)
+    sorted_dates = sorted(week_records)
+    if sorted_dates:
+        initial = max(week_records[d] for d in sorted_dates[:7])
+    else:
+        initial = 0
     avoided = 0
     spent = 0
-    for d in sorted(week_records):
-        idx = (d - min(habit.records)).days
-        planned = (
-            habit.plan[idx] if habit.plan and idx < len(habit.plan) else week_records[d]
-        )
+    for d in sorted_dates:
         actual = week_records[d]
-        avoided += max(0, planned - actual)
+        avoided += max(0, initial - actual)
         spent += actual
-    # Money saved: avoided cigarettes / cigarettes_per_pack * price_per_pack
-    money_saved = avoided / cigarettes_per_pack * price_per_pack
-    print(f"In the last 7 days, you avoided {avoided} cigarettes!")
+    # Money saved: avoided cigarettes * cigarettes_per_pack / price_per_pack
+    money_saved = avoided * cigarettes_per_pack / price_per_pack
+    print(
+        (
+            f"In the last 7 days, you avoided {avoided} cigarettes compared to your initial "
+            f"consumption of {initial} per day!"
+        )
+    )
     print(f"You saved approximately {money_saved:.2f} € by not smoking.")
     print(f"You still smoked {spent} cigarettes this week.")
+
+    # Show a bar chart for visual motivation
+
+    labels = ["Cigarettes Avoided", "Money Saved (€)", "Cigarettes Smoked"]
+    values = [avoided, money_saved, spent]
+    colors = ["tab:green", "tab:blue", "tab:red"]
+
+    plt.figure(figsize=(6, 4))
+    bars = plt.bar(labels, values, color=colors)
+    plt.title("Your Progress This Week")
+    plt.ylabel("Count / Euros")
+
+    for i, bar in enumerate(bars):
+        yval = bar.get_height()
+        if labels[i] == "Money Saved (€)":
+            # Put the label **inside the bar, slightly above bottom**
+            plt.text(
+                bar.get_x() + bar.get_width() / 2,
+                yval * 0.05,
+                f"{yval:.2f} €",
+                ha="center",
+                va="bottom",
+                color="white",
+                fontweight="bold",
+            )
+        else:
+            # Keep other labels above the bar
+            plt.text(
+                bar.get_x() + bar.get_width() / 2,
+                yval + 0.5,
+                f"{yval:.0f}",
+                ha="center",
+                va="bottom",
+            )
+
+    plt.tight_layout()
+    plt.show()
