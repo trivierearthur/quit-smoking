@@ -26,16 +26,13 @@ def main():
         return
 
     if not tracker.habits:
-        # Initialize predefined habits with realistic prior data
+        # Add only habits that are NOT already added by setup_initial_consumption
+        already_added = {"Cigarettes Smoked", "Nicotine Gum Used"}
         for h in PREDEFINED_HABITS:
+            if h["name"] in already_added:
+                continue  # Skip, already added
             habit = Habit(h["name"], h["description"], h["periodicity"], h["type_"])
-            # Only use user input for cigarettes and gums
-            if habit.name in ("Cigarettes Smoked", "Nicotine Gum Used"):
-                prior_data = generate_prior_data(
-                    habit.name, initial_value=initial_values[habit.name]
-                )
-            else:
-                prior_data = generate_prior_data(habit.name)
+            prior_data = generate_prior_data(habit.name)
             habit.init_time_series(prior_data)
             tracker.add_habit(habit)
 
