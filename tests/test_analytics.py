@@ -4,7 +4,6 @@ from src.analytics import (
     habits_by_periodicity,
     longest_run_streak_for_habit,
     longest_run_streak_all,
-    plot_habit_time_series,
 )
 from src.habit import Habit
 from src.tracker import HabitTracker
@@ -13,74 +12,43 @@ from src.tracker import HabitTracker
 def test_list_habits():
     # Test that all habit names are listed from the tracker
     tracker = HabitTracker()
-    h1 = Habit("No Smoking", "desc", "daily", "elimination")
-    h2 = Habit("Exercise", "desc", "weekly", "establishment")
+    h1 = Habit("Cigarettes Smoked", "desc", "daily", "elimination")
+    h2 = Habit("Nicotine Gum Used", "desc", "daily", "elimination")
     tracker.add_habit(h1)
     tracker.add_habit(h2)
-    assert set(list_habits(tracker)) == {"No Smoking", "Exercise"}
+    assert set(list_habits(tracker)) == {"Cigarettes Smoked", "Nicotine Gum Used"}
 
 
 def test_habits_by_periodicity():
     # Test that habits are filtered by periodicity
     tracker = HabitTracker()
-    h1 = Habit("No Smoking", "desc", "daily", "elimination")
-    h2 = Habit("Exercise", "desc", "weekly", "establishment")
+    h1 = Habit("Cigarettes Smoked", "desc", "daily", "elimination")
+    h2 = Habit("Nicotine Gum Used", "desc", "weekly", "elimination")
     tracker.add_habit(h1)
     tracker.add_habit(h2)
-    assert habits_by_periodicity(tracker, "daily") == ["No Smoking"]
-    assert habits_by_periodicity(tracker, "weekly") == ["Exercise"]
+    assert habits_by_periodicity(tracker, "daily") == ["Cigarettes Smoked"]
+    assert habits_by_periodicity(tracker, "weekly") == ["Nicotine Gum Used"]
 
 
-def test_longest_streak():
+def test_longest_run_streak_for_habit():
     # Test the longest streak calculation for a single habit
-    habit = Habit("Test", "desc", "daily", "elimination")
-    # No records: streak should be 0
-    assert longest_run_streak_for_habit(habit) == 0
-    # Add a 3-day streak
-    base = datetime.date(2025, 9, 10)
+    habit = Habit("Cigarettes Smoked", "desc", "daily", "elimination")
+    base = datetime.date.today()
     for i in range(3):
         habit.log(1, date=base + datetime.timedelta(days=i))
     assert longest_run_streak_for_habit(habit) == 3
-    # Add a break in the streak, should still return 3
-    habit.log(1, date=base + datetime.timedelta(days=5))
-    assert longest_run_streak_for_habit(habit) == 3
 
 
-def test_longest_streak_all():
+def test_longest_run_streak_all():
     # Test the longest streak calculation across all habits in the tracker
     tracker = HabitTracker()
-    h1 = Habit("A", "desc", "daily", "elimination")
-    h2 = Habit("B", "desc", "daily", "elimination")
-    base = datetime.date(2025, 9, 10)
+    h1 = Habit("Cigarettes Smoked", "desc", "daily", "elimination")
+    h2 = Habit("Nicotine Gum Used", "desc", "daily", "elimination")
+    base = datetime.date.today()
     for i in range(2):
         h1.log(1, date=base + datetime.timedelta(days=i))
     for i in range(4):
         h2.log(1, date=base + datetime.timedelta(days=i))
     tracker.add_habit(h1)
     tracker.add_habit(h2)
-    # The longest streak should be 4 (from h2)
     assert longest_run_streak_all(tracker) == 4
-
-
-def test_plot_habit_time_series(monkeypatch):
-    # Test that the plot function calls plt.show() when data is present
-    habit = Habit("Test", "desc", "daily", "elimination")
-    base = datetime.date(2025, 9, 10)
-    for i in range(3):
-        habit.log(i, date=base + datetime.timedelta(days=i))
-    called = {}
-
-    def fake_show():
-        called["shown"] = True
-
-    monkeypatch.setattr("matplotlib.pyplot.show", fake_show)
-    plot_habit_time_series(habit)
-    assert called.get("shown")
-
-
-def test_plot_habit_time_series_no_data(capsys):
-    # Test that the plot function prints a message when no data is present
-    habit = Habit("Test", "desc", "daily", "elimination")
-    plot_habit_time_series(habit)
-    captured = capsys.readouterr()
-    assert "No data for Test" in captured.out

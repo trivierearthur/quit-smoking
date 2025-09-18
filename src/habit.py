@@ -2,7 +2,9 @@ import datetime
 
 
 class Habit:
-    def __init__(self, name, description, periodicity, type_, created=None):
+    def __init__(
+        self, name, description, periodicity, type_, created=None, initial_value=None
+    ):
         self.name = name
         self.description = description
         self.periodicity = periodicity
@@ -11,6 +13,7 @@ class Habit:
         self.records = {}  # date -> value
         self.plan = []  # reduction plan
         self.time_series = {}  # last 28 days
+        self.initial_value = initial_value  # initial consumption value (optional)
 
     def log(self, value, date=None):
         if date is None:
