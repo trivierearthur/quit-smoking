@@ -1,27 +1,20 @@
 import matplotlib.pyplot as plt
 from functools import reduce
+import datetime
 
 
 def list_habits(tracker):
-    """
-    Return a list of all currently tracked habit names.
-    """
-    return list(map(lambda h: h.name, tracker.habits))
+    """Return a list of all currently tracked habit names."""
+    return [h.name for h in tracker.habits]
 
 
 def habits_by_periodicity(tracker, period):
-    """
-    Return a list of all habit names with the given periodicity (e.g., 'daily', 'weekly').
-    """
-    return list(
-        map(lambda h: h.name, filter(lambda h: h.periodicity == period, tracker.habits))
-    )
+    """Return a list of all habit names with the given periodicity."""
+    return [h.name for h in tracker.habits if h.periodicity == period]
 
 
 def longest_run_streak_for_habit(habit):
-    """
-    Return the longest run streak for a given habit (consecutive days with a record).
-    """
+    """Return the longest run streak for a given habit (consecutive days with a record)."""
     dates = sorted(habit.records.keys())
     if not dates:
         return 0
@@ -39,15 +32,14 @@ def longest_run_streak_for_habit(habit):
 
 
 def longest_run_streak_all(tracker):
-    """
-    Return the longest run streak among all defined habits.
-    """
+    """Return the longest run streak among all defined habits."""
     return reduce(
         lambda acc, h: max(acc, longest_run_streak_for_habit(h)), tracker.habits, 0
     )
 
 
 def plot_habit_time_series(habit):
+    """Plot last 28 days of a habit time series."""
     if not habit.time_series:
         print(f"No data for {habit.name}")
         return
@@ -57,7 +49,7 @@ def plot_habit_time_series(habit):
 
     plt.figure(figsize=(8, 4))
     plt.plot(dates, values, marker="o", color="tab:blue")
-    plt.title(f"{habit.name} - Last 4 Weeks")
+    plt.title(f"{habit.name} - Last 28 Days")
     plt.xlabel("Date")
     plt.ylabel("Value")
     plt.xticks(rotation=45)
@@ -68,51 +60,42 @@ def plot_habit_time_series(habit):
 def weekly_cigarettes_avoided_and_money_saved(
     tracker, price_per_pack=10.0, cigarettes_per_pack=20
 ):
-    """
-    Analyze how many cigarettes were avoided this week and how much money was saved.
-    Assumes a habit named 'Cigarettes Smoked' exists and its plan is a list of target values per day.
-    price_per_pack: price of a pack of cigarettes (default 10.0 €)
-    cigarettes_per_pack: number of cigarettes in a pack (default 20)
-    """
-    import datetime
-
+    """Analyze last 7 days of Cigarettes Smoked and calculate money saved."""
     today = datetime.date.today()
     week_ago = today - datetime.timedelta(days=6)
     habit = next((h for h in tracker.habits if h.name == "Cigarettes Smoked"), None)
+
     if not habit or not habit.records:
         print("No data for 'Cigarettes Smoked'.")
         return
-    # Only consider records from the last 7 days
+
+    # Only consider last 7 days
     week_records = {d: v for d, v in habit.records.items() if week_ago <= d <= today}
     if not week_records:
         print("No records for this week.")
         return
-    # Calculate avoided cigarettes: (initial - actual) for each day, sum up
-    # Assume initial value is the max value in the first 7 days of records (or the first value)
-    sorted_dates = sorted(week_records)
-    if sorted_dates:
-        initial = max(week_records[d] for d in sorted_dates[:7])
-    else:
-        initial = 0
+
+    # Use user-defined initial value if it exists, else fallback to max of first 7 records
+    initial = getattr(habit, "initial_value", None)
+    if initial is None:
+        sorted_dates = sorted(week_records)
+        initial = max(week_records[d] for d in sorted_dates[:7]) if sorted_dates else 0
+
     avoided = 0
     spent = 0
-    for d in sorted_dates:
-        actual = week_records[d]
+    for d, actual in week_records.items():
         avoided += max(0, initial - actual)
         spent += actual
-    # Money saved: avoided cigarettes * cigarettes_per_pack / price_per_pack
-    money_saved = avoided * cigarettes_per_pack / price_per_pack
+
+    money_saved = avoided * price_per_pack / cigarettes_per_pack
+
     print(
-        (
-            f"In the last 7 days, you avoided {avoided} cigarettes compared to your initial "
-            f"consumption of {initial} per day!"
-        )
+        f"\nIn the last 7 days, you avoided {avoided} cigarettes compared to your initial consumption of {initial} per day!"
     )
     print(f"You saved approximately {money_saved:.2f} € by not smoking.")
     print(f"You still smoked {spent} cigarettes this week.")
 
-    # Show a bar chart for visual motivation
-
+    # Bar chart
     labels = ["Cigarettes Avoided", "Money Saved (€)", "Cigarettes Smoked"]
     values = [avoided, money_saved, spent]
     colors = ["tab:green", "tab:blue", "tab:red"]
@@ -125,7 +108,7 @@ def weekly_cigarettes_avoided_and_money_saved(
     for i, bar in enumerate(bars):
         yval = bar.get_height()
         if labels[i] == "Money Saved (€)":
-            # Put the label **inside the bar, slightly above bottom**
+            # put label inside the bar for visibility
             plt.text(
                 bar.get_x() + bar.get_width() / 2,
                 yval * 0.05,
@@ -136,7 +119,6 @@ def weekly_cigarettes_avoided_and_money_saved(
                 fontweight="bold",
             )
         else:
-            # Keep other labels above the bar
             plt.text(
                 bar.get_x() + bar.get_width() / 2,
                 yval + 0.5,

@@ -19,23 +19,33 @@ def main():
     init_db()
     tracker = load_tracker()
 
+    # Always ask initial consumption for cigarettes & gums at startup
+    initial_values = setup_initial_consumption(tracker)
+    if initial_values is None:
+        print("Error: Initial consumption values not provided. Exiting.")
+        return
+
     if not tracker.habits:
         # Initialize predefined habits with realistic prior data
         for h in PREDEFINED_HABITS:
             habit = Habit(h["name"], h["description"], h["periodicity"], h["type_"])
-            prior_data = generate_prior_data(habit.name)
+            # Only use user input for cigarettes and gums
+            if habit.name in ("Cigarettes Smoked", "Nicotine Gum Used"):
+                prior_data = generate_prior_data(
+                    habit.name, initial_value=initial_values[habit.name]
+                )
+            else:
+                prior_data = generate_prior_data(habit.name)
             habit.init_time_series(prior_data)
             tracker.add_habit(habit)
 
-    # Ask initial consumption for cigarettes & gums
-    initial_values = setup_initial_consumption()
-    plans = generate_reduction_plan(
-        initial_values["Cigarettes Smoked"], initial_values["Nicotine Gum Used"]
-    )
-    for habit in tracker.habits:
-        if habit.name in plans:
-            habit.plan = plans[habit.name]
-        save_habit(habit)  # persist in DB
+        plans = generate_reduction_plan(
+            initial_values["Cigarettes Smoked"], initial_values["Nicotine Gum Used"]
+        )
+        for habit in tracker.habits:
+            if habit.name in plans:
+                habit.plan = plans[habit.name]
+            save_habit(habit)  # persist in DB
 
     while True:
         print("\n=== Quit Smoking Coach ===")
