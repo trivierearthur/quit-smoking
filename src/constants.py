@@ -1,46 +1,56 @@
-"""
-constants.py
-This module defines application-wide constants for the Quit Smoking app.
+HABIT_TYPE_ELIMINATION = "ELIMINATION"
+HABIT_TYPE_ESTABLISHMENT = "ESTABLISHMENT"
 
-PREDEFINED_HABITS is a list of dictionaries, each representing a habit that is tracked by default when a new user starts the app.
-Each habit includes:
-    - name: The display name of the habit
-    - description: A short explanation of what is tracked
-    - periodicity: How often the habit is tracked (daily, weekly, monthly)
-    - type_: Whether the habit is an 'elimination' (reduce/quit) or 'establishment' (build/start) habit
+PERIODICITY_DAILY = "DAILY"
+PERIODICITY_WEEKLY = "WEEKLY"
+PERIODICITY_MONTHLY = "MONTHLY"
 
-This list is used to initialize the user's habit tracker with meaningful default habits and to provide context for analytics and planning features.
-"""
+HABIT_CIGARETTE_SMOKED_ID = 1
+HABIT_NICOTINE_GUM_USED_ID = 2
+HABIT_SPECIALIST_APPOINTMENT_ID = 3
+HABIT_SPORT_HABIT_ID = 4
+HABIT_MEDITATION_TIME_ID = 5
 
-PREDEFINED_HABITS = [
-    {
-        "name": "Cigarettes Smoked",
-        "description": "Number of cigarettes smoked",
-        "periodicity": "daily",
-        "type_": "elimination",
-    },
-    {
-        "name": "Nicotine Gum Used",
-        "description": "Number of gums used",
-        "periodicity": "daily",
-        "type_": "elimination",
-    },
-    {
-        "name": "Specialist Appointment",
-        "description": "Schedule and attend appointments",
-        "periodicity": "monthly",
-        "type_": "establishment",
-    },
-    {
-        "name": "Sport",
-        "description": "Engage in physical activity",
-        "periodicity": "weekly",
-        "type_": "establishment",
-    },
-    {
-        "name": "Meditation Time",
-        "description": "Spend time meditating",
-        "periodicity": "daily",
-        "type_": "establishment",
-    },
+
+DEFAULT_HABITS = [
+    (
+        HABIT_CIGARETTE_SMOKED_ID,
+        "Cigarettes Smoked",
+        "Number of cigarettes smoked",
+        PERIODICITY_DAILY,
+        HABIT_TYPE_ELIMINATION,
+    ),
+    (
+        HABIT_NICOTINE_GUM_USED_ID,
+        "Nicotine Gum Used",
+        "Number of gums used",
+        PERIODICITY_DAILY,
+        HABIT_TYPE_ELIMINATION,
+    ),
+    (
+        HABIT_MEDITATION_TIME_ID,
+        "Meditation Time",
+        "Spend time meditating",
+        PERIODICITY_DAILY,
+        HABIT_TYPE_ESTABLISHMENT,
+    ),
+    (
+        HABIT_SPORT_HABIT_ID,
+        "Sport",
+        "Engage in physical activity",
+        PERIODICITY_WEEKLY,
+        HABIT_TYPE_ESTABLISHMENT,
+    ),
+    (
+        HABIT_SPECIALIST_APPOINTMENT_ID,
+        "Specialist Appointment",
+        "Schedule and attend appointments",
+        PERIODICITY_MONTHLY,
+        HABIT_TYPE_ESTABLISHMENT,
+    ),
 ]
+
+DEFAULT_TIME_RANGE_IN_DAYS = 28
+
+CIGARTETTE_PRICE_PER_PACK = 10
+CIGARTETTE_PER_PACK = 20
