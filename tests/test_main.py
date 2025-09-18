@@ -23,7 +23,7 @@ def test_main_menu_exit(monkeypatch, capsys):
     monkeypatch.setattr(
         main,
         "setup_initial_consumption",
-        lambda: {"Cigarettes Smoked": 1, "Nicotine Gum Used": 1},
+        lambda tracker: {"Cigarettes Smoked": 1, "Nicotine Gum Used": 1},
     )
     monkeypatch.setattr(main, "generate_reduction_plan", lambda c, g: {})
     monkeypatch.setattr(main, "save_habit", lambda h: None)
