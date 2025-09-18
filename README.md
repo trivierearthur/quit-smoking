@@ -137,3 +137,10 @@ Listed in `.vscode/extensions.json`:
 - [x] You have 4 weeks worth of predefined habit data (time-series data) that you can use in unit tests to verify your streak calculations.
 
 - [ ] You have a good suite of unit tests covering a) habit creation, editing and deletion and b) tests for each functionality in the analytics module.
+
+- [ ]Your solution has an analytics module that allows users to analyse their habits. The functionality of this
+analytics module must be implemented using the functional programming paradigm. You are free to consider implementing other functionality as well, but these are the minimal requirements. Provide functionality to
+- return a list of all currently tracked habits,
+- return a list of all habits with the same periodicity,
+- return the longest run streak of all defined habits,
+- and return the longest run streak for a given habit
