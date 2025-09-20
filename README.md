@@ -130,7 +130,7 @@ Listed in `.vscode/extensions.json`:
 
 - [ ] You have some basic code comments.
 
-- [ ] **Your analytics module is complete, as defined in the portfolio guidelines.**
+- [x] **Your analytics module is complete, as defined in the portfolio guidelines.**
 
 - [ ] Your streak calculation respects the habit's periodicity.
 
