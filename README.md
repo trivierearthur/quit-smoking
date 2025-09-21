@@ -2,6 +2,31 @@
 
 A console-based habit tracker to help you quit smoking, build healthier routines, and gain insights through analytics.  
 
+##  Features
+
+- ** Dashboard**: View all your habits with current status and record counts
+- ** Daily Logging**: Record your daily habit values and track progress
+- ** Analytics**: Visualize progress with time series plots and streak calculations
+- ** Reduction Plans**: Generate personalized tapering schedules for elimination habits
+- ** Cost Tracking**: Calculate money saved from avoiding cigarettes
+- ** Habit Management**: Add, update, and delete custom habits
+- ** Interactive Charts**: Matplotlib visualizations for progress tracking
+
+##  Quick Start
+
+The app comes with 5 predefined habits to get you started:
+
+**Elimination Habits** (reduce these):
+- **Cigarettes Smoked** (daily) - Track daily cigarette consumption
+- **Nicotine Gum Used** (daily) - Monitor nicotine replacement usage
+
+**Establishment Habits** (build these):
+- **Meditation Time** (daily) - Track daily meditation practice
+- **Sport** (weekly) - Monitor physical activity engagement  
+- **Specialist Appointment** (monthly) - Track healthcare appointments
+
+The app automatically generates 4 weeks of sample data when first launched, so you can immediately explore all features and see how analytics work.
+
 ---
 
 ## Project Setup  
@@ -44,6 +69,34 @@ python main.py
 
 This starts the console interface for the Quit Smoking App.  
 
+##  How to Use
+
+Once launched, you'll see a menu with 8 options:
+
+1. **Dashboard** - View all habits with today's values and total records
+2. **Log Today Habits** - Enter values for your habits (e.g., cigarettes smoked)
+3. **Show Reduction Plans** - Get personalized tapering schedules for elimination habits
+4. **Show Analytics** - View streak statistics and interactive progress charts
+5. **Add Habit** - Create custom habits (daily/weekly/monthly, elimination/establishment)
+6. **Delete Habit** - Remove habits you no longer want to track
+7. **Update Habit** - Modify existing habit properties
+8. **Exit** - Close the application
+
+###  Analytics Features
+
+The analytics module provides comprehensive insights:
+
+- **Streak Calculations**: Find your longest consecutive days across all habits
+- **Time Series Charts**: 28-day trend visualization for each habit
+- **Weekly Progress**: Cigarette avoidance and cost savings analysis
+- **Visual Progress**: Interactive matplotlib charts and graphs
+
+###  Data Storage
+
+- All data is stored in a local SQLite database (`.db/habits.sqlite`)
+- Data persists between sessions automatically
+- No cloud storage - your data stays private on your machine
+
 ---
 
 ## Running Tests  
@@ -82,6 +135,26 @@ If you do not see any tests, ensure your test files are named like `test_*.py` a
 ---
 
 
+---
+
+##  Project Structure
+
+```
+quit-smoking/
+├── src/                    # Main application code
+│   ├── analytics.py        # Functional programming analytics & visualization
+│   ├── cli.py             # Command-line interface and menu system
+│   ├── constants.py       # App constants and default habits
+│   ├── db.py              # SQLite database operations
+│   ├── habit_manager.py   # Core habit management logic
+│   ├── models.py          # Data models and structures
+│   └── utils.py           # Utility functions
+├── tests/                  # Unit tests (pytest)
+├── .db/                   # SQLite database storage
+├── main.py                # Application entry point
+└── requirements.txt       # Python dependencies
+```
+
 ## Dependencies
 
 - **pytest** → Unit testing
@@ -116,31 +189,3 @@ Listed in `.vscode/extensions.json`:
 
 ---
 
-## Project Requirements & Checklist  
-
-- [ ] Unit tests implemented  
-
-- [x] Your project is uploaded to GitHub (code not zipped) and polished.
-
-- [x] Your project has a good Readme.
-
-- [x] You follow basic Python naming conventions and don't commit files the users don't need (e.g. pycache, use a .gitignore if needed).
-
-- [x] Your project is modular and consists of several, logically split files that make it easy for users to understand how your app works.
-
-- [ ] You have some basic code comments.
-
-- [x] **Your analytics module is complete, as defined in the portfolio guidelines.**
-
-- [ ] Your streak calculation respects the habit's periodicity.
-
-- [x] You have 4 weeks worth of predefined habit data (time-series data) that you can use in unit tests to verify your streak calculations.
-
-- [ ] You have a good suite of unit tests covering a) habit creation, editing and deletion and b) tests for each functionality in the analytics module.
-
-- [ ]Your solution has an analytics module that allows users to analyse their habits. The functionality of this
-analytics module must be implemented using the functional programming paradigm. You are free to consider implementing other functionality as well, but these are the minimal requirements. Provide functionality to
-- return a list of all currently tracked habits,
-- return a list of all habits with the same periodicity,
-- return the longest run streak of all defined habits,
-- and return the longest run streak for a given habit
