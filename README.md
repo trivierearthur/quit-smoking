@@ -4,13 +4,13 @@ A console-based habit tracker to help you quit smoking, build healthier routines
 
 ##  Features
 
-- ** Dashboard**: View all your habits with current status and record counts
-- ** Daily Logging**: Record your daily habit values and track progress
-- ** Analytics**: Visualize progress with time series plots and streak calculations
-- ** Reduction Plans**: Generate personalized tapering schedules for elimination habits
-- ** Cost Tracking**: Calculate money saved from avoiding cigarettes
-- ** Habit Management**: Add, update, and delete custom habits
-- ** Interactive Charts**: Matplotlib visualizations for progress tracking
+- **Dashboard**: View all your habits with current status and record counts
+- **Daily Logging**: Record your daily habit values and track progress
+- **Analytics**: Visualize progress with time series plots and streak calculations
+- **Reduction Plans**: Generate personalized tapering schedules for elimination habits
+- **Cost Tracking**: Calculate money saved from avoiding cigarettes
+- **Habit Management**: Add, update, and delete custom habits
+- **Interactive Charts**: Matplotlib visualizations for progress tracking
 
 ##  Quick Start
 
