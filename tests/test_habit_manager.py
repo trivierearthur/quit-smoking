@@ -13,6 +13,7 @@ The tests use mock database objects to isolate the habit management logic
 from database implementation details and ensure reliable, fast unit testing.
 """
 
+from datetime import datetime
 from unittest.mock import MagicMock
 
 from src import constants
@@ -40,7 +41,7 @@ def test_add_habit():
     # Configure mock to return a HabitModel when add_habit is called
     mock_db.add_habit.side_effect = (
         lambda name, desc, periodicity, habit_type: HabitModel(
-            1, name, desc, periodicity, habit_type, None, []
+            1, name, desc, periodicity, habit_type, datetime.now(), []
         )
     )
 
@@ -58,8 +59,8 @@ def test_add_habit():
     habit_manager.add_habit(test_name, test_desc, test_periodicity, test_type)
 
     # Assert - Verify habit was added correctly
-    assert len(habit_manager.habits) == 1  # One habit should be in the list
-    assert habit_manager.habits[0].name == test_name  # Name should match
+    assert len(habit_manager.habits) == 1
+    assert habit_manager.habits[0].name == test_name
 
     # Verify database interaction
     mock_db.add_habit.assert_called_with(
@@ -94,8 +95,8 @@ def test_update_habit():
             "Number of cigarettes smoked daily",
             constants.PERIODICITY_DAILY,
             constants.HABIT_TYPE_ESTABLISHMENT,
-            None,  # Created timestamp (not relevant for this test)
-            [],  # Empty records list
+            datetime.now(),
+            [],
         )
     )
 
@@ -153,8 +154,8 @@ def test_remove_habit():
             "Number of cigarettes smoked daily",
             constants.PERIODICITY_DAILY,
             constants.HABIT_TYPE_ESTABLISHMENT,
-            None,  # Created timestamp (not relevant for this test)
-            [],  # Empty records list
+            datetime.now(),
+            [],
         )
     )
 
