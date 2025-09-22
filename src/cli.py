@@ -1,132 +1,208 @@
-# CLI module: Handles user interaction, menu logic, and connects tracker, habit, and analytics modules.
-from src.tracker import HabitTracker
-from src.habit import Habit
-from src.analytics import (
-    plot_habit_time_series,
-    list_habits,
-    habits_by_periodicity,
-    longest_run_streak_for_habit,
-    longest_run_streak_all,
-    weekly_cigarettes_avoided_and_money_saved,
-)
-import random
+from typing import Callable, Dict, Tuple
+from src import analytics, utils
+from src.habit_manager import HabitManager
+from src import constants
 
 
-def generate_prior_data(habit_name, initial_value=None):
-    """
-    Generate 28 days of prior data for a given habit name.
-    Used to pre-populate time series for new habits.
-    """
-    if habit_name == "Cigarettes Smoked":
-        start = initial_value if initial_value is not None else 5
-        return [max(0, start - i // 4 + random.choice([0, 0, 1])) for i in range(28)]
-    elif habit_name == "Nicotine Gum Used":
-        start = initial_value if initial_value is not None else 3
-        return [max(0, start - i // 5 + random.choice([0, 0, 1])) for i in range(28)]
-    elif habit_name == "Sport":
-        return [1 if i % 3 == 0 else random.choice([0, 1]) for i in range(28)]
-    elif habit_name == "Meditation Time":
-        return [1 if random.random() < 0.7 else 0 for i in range(28)]
-    elif habit_name == "Specialist Appointment":
-        days = [0] * 28
-        days[random.randint(0, 27)] = 1
-        return days
+def print_header(title: str):
+    print("\n" + title)
+    print("-" * len(title))
+
+
+def show_dashboard(habit_manager: HabitManager):
+    print_header("Dashboard")
+
+    for habit in habit_manager.habits:
+        print(
+            f"• {habit.name} ({habit.periodicity}), today={habit_manager.get_today_habit_value(habit.id)}, total={len(habit.records)}"
+        )
+
+
+def print_habits_by_priority(habit_manager: HabitManager):
+    print("\nTracked habits by periodicity:")
+    for periodicity in [
+        constants.PERIODICITY_DAILY,
+        constants.PERIODICITY_WEEKLY,
+        constants.PERIODICITY_MONTHLY,
+    ]:
+        print(
+            f"{periodicity} habits:",
+            " | ".join(
+                [h.name for h in habit_manager.habits if h.periodicity == periodicity]
+            ),
+        )
+
+
+def show_analytics(habit_manager: HabitManager):
+    print_header("Analytics")
+
+    # Tracked habits by periodicity
+    print_habits_by_priority(habit_manager)
+
+    # Longest streak all habits
+    print(
+        "\nLongest streak across all habits:",
+        analytics.longest_run_streak_all(habit_manager),
+    )
+
+    for habit in habit_manager.habits:
+        # Longest streak per habit
+        print(
+            f"Longest streak for {habit.name}: {analytics.longest_run_streak_for_habit(habit)}"
+        )
+
+        # Plot habit
+        analytics.plot_habit_time_series(habit)
+
+    weekly_stats = analytics.weekly_cigarettes_avoided_and_money_saved(habit_manager)
+
+    if weekly_stats:
+        print("\n--- Weekly Stats ---")
+        print(
+            f"In the last 7 days ({weekly_stats.start_date} → {weekly_stats.end_date}), "
+            f"you avoided {weekly_stats.avoided} cigarettes vs {weekly_stats.initial}/day baseline."
+        )
+        print(f"Money saved: {weekly_stats.money_saved:.2f} €")
+        print(f"Still smoked: {weekly_stats.spent}")
+        analytics.plot_weekly_stats(weekly_stats)
     else:
-        return [0] * 28
+        print("No data for 'Cigarettes Smoked'.")
 
 
-def setup_initial_consumption(tracker: HabitTracker):
-    """
-    Prompt the user for initial daily values for cigarettes and gum.
-    Create habits with initial_value attached.
-    """
-    print("=== Welcome to Quit Smoking Coach ===")
-    habits_to_ask = [
-        ("Cigarettes Smoked", "Reduce smoking habit"),
-        ("Nicotine Gum Used", "Track nicotine gum usage"),
-    ]
+def show_reduction_plan(habit_manager: HabitManager):
+    print_header("Show reduction plans")
 
-    initial_values = {}
-    # Use actual dates for keys, not integer indices
-    for name, desc in habits_to_ask:
-        while True:
-            try:
-                value = int(input(f"How many {name} per day? "))
-                break
-            except ValueError:
-                print("Please enter a valid number.")
-
-        habit = Habit(name, desc, "daily", "elimination")
-        habit.initial_value = value  # store the initial consumption
-        today = __import__("datetime").date.today()
-        habit.records = {
-            today - __import__("datetime").timedelta(days=28 - i): v
-            for i, v in enumerate(generate_prior_data(name, initial_value=value))
-        }
-        tracker.add_habit(habit)
-        initial_values[name] = value
-
-    return initial_values
+    plan = {}
+    for habit in [
+        h
+        for h in habit_manager.habits
+        if h.habit_type == constants.HABIT_TYPE_ELIMINATION
+    ]:
+        today_record = habit_manager.get_today_habit_value(habit.id)
+        step = today_record / constants.DEFAULT_TIME_RANGE_IN_DAYS
+        plan[habit.name] = [
+            max(0, round(today_record - i * step))
+            for i in range(constants.DEFAULT_TIME_RANGE_IN_DAYS)
+        ]
+        print(f"Plan for {habit.name}:")
+        print(", ".join(str(v) for v in plan[habit.name]))
+        print()
 
 
-def show_dashboard(tracker: HabitTracker):
-    print("\nYour habits:")
-    for habit in tracker.habits:
-        print(f"- {habit.name} ({habit.periodicity}), records={len(habit.records)}")
+def log_values(habit_manager: HabitManager, habit_type: str | None = None):
+    print_header("Complete today habits")
 
-
-def show_reduction_plans(tracker: HabitTracker):
-    for habit in tracker.habits:
-        if hasattr(habit, "plan") and habit.plan:
-            print(f"Plan for {habit.name}:")
-            print(", ".join(str(v) for v in habit.plan))
-
-
-def log_habit_values(tracker: HabitTracker):
-    for habit in tracker.habits:
+    for habit in [
+        h
+        for h in habit_manager.habits
+        if habit_type is None or h.habit_type == habit_type
+    ]:
         try:
-            value = int(input(f"Enter today's value for {habit.name}: "))
-            tracker.log_habit(habit.name, value)
+            input_value = input(f"Enter today's value for {habit.name}: ")
+            habit_manager.log_today_habit(habit.id, int(input_value))
         except ValueError:
             print("Invalid input. Skipping.")
 
 
-def add_habit(tracker: HabitTracker):
-    name = input("Habit name: ")
+def add_habit(habit_manager: HabitManager):
+    print_header("Add habit")
+
+    name = input("Habit name: ").strip()
+    desc = input("Description: ").strip()
+    periodicity = utils.input_select(
+        "Periodicity: ",
+        [
+            constants.PERIODICITY_DAILY,
+            constants.PERIODICITY_WEEKLY,
+            constants.PERIODICITY_MONTHLY,
+        ],
+    )
+    habit_type = utils.input_select(
+        "Type: ",
+        [constants.HABIT_TYPE_ELIMINATION, constants.HABIT_TYPE_ESTABLISHMENT],
+    )
+    habit_manager.add_habit(name, desc, periodicity, habit_type)
+    print(f"\nHabit '{name}' added!")
+
+
+def delete_habit(habit_manager: HabitManager):
+    print_header("Delete habit")
+
+    selected_habit_name = utils.input_select(
+        "Habit name to delete: ",
+        [h.name for h in habit_manager.habits],
+    )
+
+    habit_manager.remove_habit(selected_habit_name)
+    print(f"\nHabit '{selected_habit_name}' deleted!")
+
+
+def update_habit(habit_manager: HabitManager):
+    print_header("Update habit")
+
+    selected_habit_name = utils.input_select(
+        "Habit name to update: ",
+        [h.name for h in habit_manager.habits],
+    )
+
+    new_name = input("Name: ")
     desc = input("Description: ")
-    periodicity = input("Periodicity (daily/weekly/monthly): ")
-    type_ = input("Type (elimination/establishment): ")
-    tracker.add_habit(Habit(name, desc, periodicity, type_))
-    print(f"Habit '{name}' added!")
 
-
-def remove_habit(tracker: HabitTracker):
-    name = input("Habit name to remove: ")
-    tracker.remove_habit(name)
-    print(f"Habit '{name}' removed if existed.")
-
-
-def modify_habit(tracker: HabitTracker):
-    old_name = input("Name of habit to modify: ")
-    new_name = input("New name (leave blank to keep): ") or None
-    new_desc = input("New description (leave blank to keep): ") or None
-    new_periodicity = (
-        input("New periodicity (daily/weekly/monthly, leave blank to keep): ") or None
+    periodicity = utils.input_select(
+        "Periodicity: ",
+        [
+            constants.PERIODICITY_DAILY,
+            constants.PERIODICITY_WEEKLY,
+            constants.PERIODICITY_MONTHLY,
+        ],
     )
-    new_type = (
-        input("New type (elimination/establishment, leave blank to keep): ") or None
+
+    habit_type = utils.input_select(
+        "Type: ",
+        [constants.HABIT_TYPE_ELIMINATION, constants.HABIT_TYPE_ESTABLISHMENT],
     )
-    tracker.modify_habit(old_name, new_name, new_desc, new_periodicity, new_type)
-    print(f"Habit '{old_name}' modified if existed.")
+
+    habit_manager.update_habit(
+        selected_habit_name, new_name, desc, periodicity, habit_type
+    )
+    print(f"\nHabit '{selected_habit_name}' updated!")
 
 
-def show_analytics(tracker: HabitTracker):
-    print("\nTracked habits:", list_habits(tracker))
-    for period in ["daily", "weekly", "monthly"]:
-        print(f"{period.capitalize()} habits:", habits_by_periodicity(tracker, period))
-    print("Longest streak across all habits:", longest_run_streak_all(tracker))
-    for habit in tracker.habits:
-        print(f"Longest streak for {habit.name}: {longest_run_streak_for_habit(habit)}")
-        plot_habit_time_series(habit)
-    print("\n--- Weekly Motivation ---")
-    weekly_cigarettes_avoided_and_money_saved(tracker)
+def exit_app(_: HabitManager):
+    print("\nGoodbye!")
+    raise SystemExit
+
+
+MENU_ACTIONS: Dict[str, Tuple[str, Callable[[HabitManager], None]]] = {
+    "1": ("Dashboard (list habits)", show_dashboard),
+    "2": ("Log today habits", log_values),
+    "3": ("Show reduction plans", show_reduction_plan),
+    "4": ("Show analytics", show_analytics),
+    "5": ("Add habit", add_habit),
+    "6": ("Delete habit", delete_habit),
+    "7": ("Update habit", update_habit),
+    "8": ("Exit", exit_app),
+}
+
+
+def show_menu(habit_manager: HabitManager):
+    print("\n=== Quit Smoking Coach ===")
+
+    try:
+        while True:
+            print("\nMenu:\n")
+            for key, (label, _) in MENU_ACTIONS.items():
+                print(f"{key}. {label}")
+
+            print()
+            choice = input("Select menu option: ").strip()
+            action = MENU_ACTIONS.get(choice)
+            if action:
+                _, func = action
+                func(habit_manager)
+            else:
+                print()
+                print("Invalid option!")
+
+    except (KeyboardInterrupt, SystemExit):
+        print("\nExiting. Goodbye!")
