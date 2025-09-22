@@ -81,7 +81,7 @@ class Database:
         description: str,
         periodicity: str,
         habit_type: str,
-        habit_id: str | None = None,
+        habit_id: int | None = None,
     ):
         cursor, commit = self._get_cursor()
 
@@ -101,8 +101,12 @@ class Database:
         )
         commit()
 
+        # Type assertion: lastrowid should never be None for successful INSERT with AUTOINCREMENT
+        habit_id_result = cursor.lastrowid
+        assert habit_id_result is not None, "Failed to get habit ID from database"
+
         return HabitModel(
-            cursor.lastrowid,
+            habit_id if habit_id is not None else habit_id_result,
             name,
             description,
             periodicity,
@@ -175,7 +179,7 @@ class Database:
 
     def update_habit(
         self,
-        habit_id: str,
+        habit_id: int,
         name: str,
         desc: str,
         periodicity: str,
