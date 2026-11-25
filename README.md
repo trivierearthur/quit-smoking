@@ -1,6 +1,7 @@
 # Quit Smoking App  
 
-A console-based habit tracker to help you quit smoking, build healthier routines, and gain insights through analytics.  
+A command-line habit tracker to monitor smoke-free streaks, cravings, and money saved—built using Object-Oriented Programming (OOP).
+
 
 ##  Features
 
